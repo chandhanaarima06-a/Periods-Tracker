@@ -5,17 +5,21 @@ console.log("Dearme is running");
     nextDate.setDate(startDate.getDate()+28);
     return nextDate.toDateString();
     }
+
+    function updatePredictionText(message){
+        let predictionText=document.getElementById("predictionText");
+        predictionText.textContent = message;
+    }
 let button=document.getElementById("logButton");
 button.addEventListener("click",function(){
     let dateInput=document.getElementById("periodDate");
     let selectedDate=dateInput.value;
-    let predictionText=document.getElementById("predictionText");
+
     if(selectedDate === ""){
-        let predictionText=document.getElementById("predictionText");
-        predictionText.textContent="Please select a date first!";
+        updatePredictionText("Please select a date first!");
         return;
     }
    
     let result=predictNextPeriod(selectedDate);
-    predictionText.textContent= "Your next period is predicted on: "  + result;
+    updatePredictionText("Your next period is predicted on: "  + result);
 });
