@@ -1,11 +1,16 @@
 import './App.css';
 import {BrowserRouter , Routes , Route } from 'react-router-dom';
+import {ClerkProvider} from '@clerk/clerk-react';
 import NavBar from './NavBar'; 
 import CycleTracker from './CycleTracker';
 import Login from './Login';
 import Signup from './Signup';
-function App(){
+function App({clerkPubKey}){
   return(
+    <ClerkProvider publishableKey={clerkPubKey}
+    signInUrl="/login"
+    signInUrl="/signup">
+
       <BrowserRouter>
       <NavBar />
       <Routes>
@@ -15,6 +20,7 @@ function App(){
       </Routes>
       
       </BrowserRouter>
+      </ClerkProvider>
      
   );
 
