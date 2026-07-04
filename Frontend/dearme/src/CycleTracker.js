@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { useUser,SignIn } from '@clerk/clerk-react';
 function CycleTracker(){
     const[selectedDate,setSelectedDate]=useState('');
     const[prediction,setPrediction]=useState('Log your period date to see your prediction here.');
@@ -16,6 +17,14 @@ function CycleTracker(){
         let nextDate =new Date(startDate);
         nextDate.setDate(startDate.getDate()+28);
         setPrediction('Your next period is predicted on: ' +nextDate.toDateString());
+    }
+    const { isSignedIn }=useUser();
+    if(!isSignedIn){
+        return(
+            <main>
+                <SignIn />
+            </main>
+        );
     }
 
     return(
