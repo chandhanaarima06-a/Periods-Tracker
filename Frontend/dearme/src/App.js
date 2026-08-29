@@ -9,14 +9,14 @@ function App({clerkPubKey}){
   return(
     <ClerkProvider publishableKey={clerkPubKey}
     signInUrl="/login"
-    signInUrl="/signup">
+    signUpUrl="/signup">
 
       <BrowserRouter>
       <NavBar />
       <Routes>
         <Route path="/" element={<CycleTracker />} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/Signup" element={<Signup/>} />
+        <Route path="/login/*" element={<Login/>} />
+        <Route path="/signup/*" element={<Signup/>} />
       </Routes>
       
       </BrowserRouter>
