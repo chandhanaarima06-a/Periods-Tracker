@@ -3,6 +3,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
 import java.time.LocalDate;
 
 @Entity
@@ -10,6 +11,10 @@ public class CycleEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private String userId;
+
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -20,6 +25,15 @@ public class CycleEntry {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public LocalDate getStartDate(){
         return startDate;
     }

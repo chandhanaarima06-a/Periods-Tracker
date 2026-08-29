@@ -1,8 +1,9 @@
 package com.dearme.backend.controller;
 
 import com.dearme.backend.entity.CycleEntry;
-import com.dearme.backend.repository.CycleEntryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dearme.backend.service.CycleEntryService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,16 +11,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/cycles")
 public class CycleEntryController {
-    @Autowired
-    private CycleEntryRepository cycleEntryRepository;
 
+    private final CycleEntryService cycleEntryService;
+
+    public CycleEntryController(CycleEntryService cycleEntryService) {
+        this.cycleEntryService = cycleEntryService;
+    }
 
     @GetMapping
-    public List<CycleEntry> getAllCycles() {
-        return cycleEntryRepository.findAll();
+    public List<CycleEntry> getAllCycles(@AuthenticationPrincipal Jwt jwt) {
+        String userId = jwt.getSubject(); // Clerk's 'sub' claim = user ID
+        return cycleEntryService.getCyclesForUser(userId);
     }
+
     @PostMapping
-    public CycleEntry createCycle (@RequestBody CycleEntry cycleEntry){
-        return cycleEntryRepository.save(cycleEntry);
+    public CycleEntry createCycle(@AuthenticationPrincipal Jwt jwt, @RequestBody CycleEntry cycleEntry) {
+        String userId = jwt.getSubject();
+        return cycleEntryService.createCycleForUser(userId, cycleEntry);
     }
 }
