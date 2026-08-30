@@ -2,7 +2,9 @@ package com.dearme.backend.controller;
 
 import com.dearme.backend.dto.CycleEntryRequest;
 import com.dearme.backend.dto.CycleEntryResponse;
+import com.dearme.backend.dto.PredictionResponse;
 import com.dearme.backend.service.CycleEntryService;
+import com.dearme.backend.service.PredictionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ class CycleEntryControllerTest {
 
     @MockitoBean
     private CycleEntryService service;
+
+    @MockitoBean
+    private PredictionService predictionService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -127,6 +132,22 @@ class CycleEntryControllerTest {
                         .content(invalidJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors.endDateValid").value("endDate must be on or after startDate"));
+    }
+
+    @Test
+    void getPrediction_returnsPrediction() throws Exception {
+        PredictionResponse response = new PredictionResponse(
+                LocalDate.of(2026, 7, 24), 28, 3, true
+        );
+        when(predictionService.getPredictionForUser(TEST_USER_ID)).thenReturn(response);
+
+        mockMvc.perform(get("/api/v1/cycles/prediction")
+                        .with(jwt().jwt(j -> j.subject(TEST_USER_ID))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nextPeriodDate").value("2026-07-24"))
+                .andExpect(jsonPath("$.averageCycleLength").value(28))
+                .andExpect(jsonPath("$.cycleCount").value(3))
+                .andExpect(jsonPath("$.reliable").value(true));
     }
 
     @Test

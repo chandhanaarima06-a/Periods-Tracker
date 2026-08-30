@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface CycleEntryRepository extends JpaRepository<CycleEntry, Long> {
     List<CycleEntry> findByUserId(String userId);
+    List<CycleEntry> findByUserIdOrderByStartDateAsc(String userId);
     Optional<CycleEntry> findByUserIdAndId(String userId, Long id);
 }
