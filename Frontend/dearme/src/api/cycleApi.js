@@ -25,10 +25,11 @@ export function useCycleApi() {
     }
 
     return {
-        getCycles: () => fetchWithAuth('/cycles'),
-        createCycle: (cycleEntry) => fetchWithAuth('/cycles', {
+        getCycles: () => fetchWithAuth('/v1/cycles'),
+        createCycle: (cycleEntry) => fetchWithAuth('/v1/cycles', {
             method: 'POST',
             body: JSON.stringify(cycleEntry),
         }),
+        getCycle: (id) => fetchWithAuth(`/v1/cycles/${id}`),
     };
 }

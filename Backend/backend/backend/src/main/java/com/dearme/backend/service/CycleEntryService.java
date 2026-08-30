@@ -1,6 +1,9 @@
 package com.dearme.backend.service;
 
+import com.dearme.backend.dto.CycleEntryRequest;
+import com.dearme.backend.dto.CycleEntryResponse;
 import com.dearme.backend.entity.CycleEntry;
+import com.dearme.backend.exception.ResourceNotFoundException;
 import com.dearme.backend.repository.CycleEntryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +21,25 @@ public class CycleEntryService {
         this.cycleEntryRepository = cycleEntryRepository;
     }
 
-    public List<CycleEntry> getCyclesForUser(String userId) {
-        return cycleEntryRepository.findByUserId(userId);
+    public List<CycleEntryResponse> getCyclesForUser(String userId) {
+        return cycleEntryRepository.findByUserId(userId)
+                .stream()
+                .map(CycleEntryResponse::fromEntity)
+                .toList();
     }
 
-    public CycleEntry createCycleForUser(String userId, CycleEntry cycleEntry) {
-        cycleEntry.setUserId(userId);
-        return cycleEntryRepository.save(cycleEntry);
+    public CycleEntryResponse createCycleForUser(String userId, CycleEntryRequest request) {
+        CycleEntry entry = new CycleEntry();
+        entry.setUserId(userId);
+        entry.setStartDate(request.getStartDate());
+        entry.setEndDate(request.getEndDate());
+        CycleEntry saved = cycleEntryRepository.save(entry);
+        return CycleEntryResponse.fromEntity(saved);
     }
 
-    public Optional<CycleEntry> getCycleForUser(String userId, Long id) {
-        return cycleEntryRepository.findByUserIdAndId(userId, id);
+    public CycleEntryResponse getCycleForUser(String userId, Long id) {
+        return cycleEntryRepository.findByUserIdAndId(userId, id)
+                .map(CycleEntryResponse::fromEntity)
+                .orElseThrow(() -> new ResourceNotFoundException("Cycle not found with id: " + id));
     }
 }
