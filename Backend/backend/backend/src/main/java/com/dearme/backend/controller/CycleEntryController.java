@@ -2,6 +2,7 @@ package com.dearme.backend.controller;
 
 import com.dearme.backend.dto.CycleEntryRequest;
 import com.dearme.backend.dto.CycleEntryResponse;
+import com.dearme.backend.dto.FertilityWindowResponse;
 import com.dearme.backend.dto.PredictionResponse;
 import com.dearme.backend.service.CycleEntryService;
 import com.dearme.backend.service.PredictionService;
@@ -40,6 +41,12 @@ public class CycleEntryController {
     public PredictionResponse getPrediction(@AuthenticationPrincipal Jwt jwt) {
         String userId = jwt.getSubject();
         return predictionService.getPredictionForUser(userId);
+    }
+
+    @GetMapping("/fertile-window")
+    public FertilityWindowResponse getFertileWindow(@AuthenticationPrincipal Jwt jwt) {
+        String userId = jwt.getSubject();
+        return predictionService.getFertileWindowForUser(userId);
     }
 
     @GetMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.dearme.backend.service;
 
+import com.dearme.backend.dto.FertilityWindowResponse;
 import com.dearme.backend.dto.PredictionResponse;
 import com.dearme.backend.entity.CycleEntry;
 import com.dearme.backend.repository.CycleEntryRepository;
@@ -89,5 +90,50 @@ class PredictionServiceTest {
         assertThat(result.getAverageCycleLength()).isEqualTo(30);
         assertThat(result.getNextPeriodDate()).isEqualTo(LocalDate.of(2026, 4, 1));
         assertThat(result.isReliable()).isTrue();
+    }
+
+    @Test
+    void getFertileWindow_whenNoCycles_returnsNullsNotReliable() {
+        when(repository.findByUserIdOrderByStartDateAsc(USER_ID)).thenReturn(List.of());
+
+        FertilityWindowResponse result = service.getFertileWindowForUser(USER_ID);
+
+        assertThat(result.getOvulationDate()).isNull();
+        assertThat(result.getFertileStart()).isNull();
+        assertThat(result.getFertileEnd()).isNull();
+        assertThat(result.isReliable()).isFalse();
+    }
+
+    @Test
+    void getFertileWindow_derivesFromPrediction() {
+        // Prediction: next period Jul 24, avg 28, reliable
+        when(repository.findByUserIdOrderByStartDateAsc(USER_ID)).thenReturn(List.of(
+                cycle(LocalDate.of(2026, 5, 1)),
+                cycle(LocalDate.of(2026, 5, 29)),
+                cycle(LocalDate.of(2026, 6, 26))
+        ));
+
+        FertilityWindowResponse result = service.getFertileWindowForUser(USER_ID);
+
+        // Ovulation = Jul 24 - 14 = Jul 10; fertile = Jul 10 - 5 = Jul 5 through Jul 11 (egg viability +1)
+        assertThat(result.getOvulationDate()).isEqualTo(LocalDate.of(2026, 7, 10));
+        assertThat(result.getFertileStart()).isEqualTo(LocalDate.of(2026, 7, 5));
+        assertThat(result.getFertileEnd()).isEqualTo(LocalDate.of(2026, 7, 11));
+        assertThat(result.isReliable()).isTrue();
+    }
+
+    @Test
+    void getFertileWindow_whenOneCycle_computesButNotReliable() {
+        // Prediction: Jan 1 + 28 (fallback) = Jan 29, not reliable
+        when(repository.findByUserIdOrderByStartDateAsc(USER_ID)).thenReturn(List.of(
+                cycle(LocalDate.of(2026, 1, 1))
+        ));
+
+        FertilityWindowResponse result = service.getFertileWindowForUser(USER_ID);
+
+        assertThat(result.getOvulationDate()).isEqualTo(LocalDate.of(2026, 1, 15));
+        assertThat(result.getFertileStart()).isEqualTo(LocalDate.of(2026, 1, 10));
+        assertThat(result.getFertileEnd()).isEqualTo(LocalDate.of(2026, 1, 16));
+        assertThat(result.isReliable()).isFalse();
     }
 }

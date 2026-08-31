@@ -32,5 +32,6 @@ export function useCycleApi() {
         }),
         getCycle: (id) => fetchWithAuth(`/v1/cycles/${id}`),
         getPrediction: () => fetchWithAuth('/v1/cycles/prediction'),
+        getFertileWindow: () => fetchWithAuth('/v1/cycles/fertile-window'),
     };
 }

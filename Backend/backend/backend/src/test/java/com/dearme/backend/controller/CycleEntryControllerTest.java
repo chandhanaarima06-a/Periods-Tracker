@@ -2,6 +2,7 @@ package com.dearme.backend.controller;
 
 import com.dearme.backend.dto.CycleEntryRequest;
 import com.dearme.backend.dto.CycleEntryResponse;
+import com.dearme.backend.dto.FertilityWindowResponse;
 import com.dearme.backend.dto.PredictionResponse;
 import com.dearme.backend.service.CycleEntryService;
 import com.dearme.backend.service.PredictionService;
@@ -10,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
@@ -147,6 +145,22 @@ class CycleEntryControllerTest {
                 .andExpect(jsonPath("$.nextPeriodDate").value("2026-07-24"))
                 .andExpect(jsonPath("$.averageCycleLength").value(28))
                 .andExpect(jsonPath("$.cycleCount").value(3))
+                .andExpect(jsonPath("$.reliable").value(true));
+    }
+
+    @Test
+    void getFertileWindow_returnsWindow() throws Exception {
+        FertilityWindowResponse response = new FertilityWindowResponse(
+                LocalDate.of(2026, 7, 10), LocalDate.of(2026, 7, 5), LocalDate.of(2026, 7, 11), true
+        );
+        when(predictionService.getFertileWindowForUser(TEST_USER_ID)).thenReturn(response);
+
+        mockMvc.perform(get("/api/v1/cycles/fertile-window")
+                        .with(jwt().jwt(j -> j.subject(TEST_USER_ID))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ovulationDate").value("2026-07-10"))
+                .andExpect(jsonPath("$.fertileStart").value("2026-07-05"))
+                .andExpect(jsonPath("$.fertileEnd").value("2026-07-11"))
                 .andExpect(jsonPath("$.reliable").value(true));
     }
 
