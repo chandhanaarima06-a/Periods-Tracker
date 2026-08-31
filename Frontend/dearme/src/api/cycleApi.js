@@ -31,5 +31,6 @@ export function useCycleApi() {
             body: JSON.stringify(cycleEntry),
         }),
         getCycle: (id) => fetchWithAuth(`/v1/cycles/${id}`),
+        getPrediction: () => fetchWithAuth('/v1/cycles/prediction'),
     };
 }

@@ -9,10 +9,26 @@ function CycleTracker() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const { getCycles, createCycle } = useCycleApi();
+    const { getCycles, createCycle, getPrediction } = useCycleApi();
     const { isSignedIn } = useUser();
 
-    // Fetch cycles on mount
+    // Format the server's prediction response into a readable message.
+    // Shared by the mount-time fetch and the post-log refresh.
+    function formatPrediction(data) {
+        if (!data.nextPeriodDate) {
+            return 'Log at least one period to see your prediction.';
+        }
+        const date = new Date(data.nextPeriodDate);
+        let text = `Your next period is predicted on: ${date.toDateString()}`;
+        if (data.reliable) {
+            text += ` (avg cycle: ${data.averageCycleLength} days)`;
+        } else {
+            text += ` (based on ${data.cycleCount} cycle${data.cycleCount !== 1 ? 's' : ''} — more data needed for accuracy)`;
+        }
+        return text;
+    }
+
+    // Fetch cycles and prediction on mount
     useEffect(() => {
         async function loadCycles() {
             try {
@@ -26,6 +42,15 @@ function CycleTracker() {
         }
         loadCycles();
     }, [getCycles]);
+
+    // Fetch prediction after cycles load (so we have cycle count context)
+    useEffect(() => {
+        if (!loading) {
+            getPrediction()
+                .then(data => setPrediction(formatPrediction(data)))
+                .catch(() => setPrediction('Failed to load prediction.'));
+        }
+    }, [loading, getPrediction]);
 
     function handleDateChange(event) {
         setSelectedDate(event.target.value);
@@ -50,10 +75,9 @@ function CycleTracker() {
             const savedCycle = await createCycle(newCycle);
             setCycles(prev => [savedCycle, ...prev]);
 
-            // Client-side prediction for immediate feedback
-            const nextDate = new Date(startDate);
-            nextDate.setDate(startDate.getDate() + 28);
-            setPrediction(`Your next period is predicted on: ${nextDate.toDateString()}`);
+            // Refresh prediction from server now that the cycle history changed
+            const data = await getPrediction();
+            setPrediction(formatPrediction(data));
         } catch (err) {
             setError(err.message);
             setPrediction('Failed to log period. Please try again.');
