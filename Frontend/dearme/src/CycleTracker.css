@@ -1,0 +1,230 @@
+/*
+  CycleTracker (home page) — uses App.css design tokens (--rose, --peach, etc.).
+  `.home` sits on the `main` element which App.css already styles as a card.
+*/
+
+/* ===== Welcome banner ===== */
+.home-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.home-banner-emoji {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.home-banner h1 {
+  font-size: 1.5rem;
+  margin: 0 0 4px;
+  color: white;
+}
+
+.home-banner p {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ===== Log period card ===== */
+.log-period-card {
+  background: var(--card);
+  border: 1px solid #eee2e0;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.card-title {
+  color: var(--ink);
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+.log-period-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.log-period-row label {
+  margin: 0;
+  flex: 0 0 100%;
+}
+
+.log-period-row input[type="date"] {
+  flex: 1 1 180px;
+}
+
+.log-period-row button {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+.notice {
+  margin-top: 12px;
+  color: var(--rose-deep);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ===== Error message ===== */
+.error-message {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fdecea;
+  color: #b43a3a;
+  border: 1px solid #f5c6c6;
+  font-size: 0.9rem;
+}
+
+/* ===== Prediction card ===== */
+.prediction-card {
+  background: var(--rose-soft);
+  border-radius: 16px;
+  border-left: 4px solid var(--rose-deep);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.prediction-card h3 {
+  color: var(--rose-deep);
+  margin: 0 0 10px;
+}
+
+.prediction-date {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+
+.prediction-detail {
+  color: #777;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.badge.reliable {
+  background: #d9f3e3;
+  color: #1f7a47;
+}
+
+.badge.estimate {
+  background: #f3e8cf;
+  color: #8a6d1f;
+}
+
+/* ===== Fertile window card ===== */
+.fertile-card {
+  background: var(--peach);
+  border-radius: 16px;
+  border-left: 4px solid var(--peach-deep);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.fertile-card h3 {
+  color: var(--rose-deep);
+  margin: 0 0 12px;
+}
+
+.fertile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e8d8b0;
+}
+
+.fertile-row:last-of-type {
+  border-bottom: none;
+}
+
+.fertile-label {
+  color: #8a6d4f;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.fertile-value {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.disclaimer {
+  margin-top: 12px;
+  font-size: 0.78rem;
+  color: #9a8077;
+}
+
+/* ===== Cycle history ===== */
+.cycle-history {
+  background: var(--card);
+  border: 1px solid #eee2e0;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.cycle-history h3 {
+  color: var(--rose-deep);
+  margin: 0 0 12px;
+}
+
+.cycle-history ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cycle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed #eee2e0;
+}
+
+.cycle-item:last-child {
+  border-bottom: none;
+}
+
+.cycle-dates {
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.cycle-days {
+  background: var(--rose-soft);
+  color: var(--rose-deep);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.muted {
+  color: #999;
+  font-size: 0.9rem;
+}
