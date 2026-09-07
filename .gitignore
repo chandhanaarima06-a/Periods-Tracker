@@ -1,0 +1,20 @@
+# ===== Claude Code / local tooling =====
+.claude/
+
+# ===== Local planning docs =====
+PLAN.md
+
+# ===== Editor =====
+.vscode/
+.idea/
+*.iml
+
+# ===== OS cruft =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+
+# ===== Temporary build scratch =====
+*.working

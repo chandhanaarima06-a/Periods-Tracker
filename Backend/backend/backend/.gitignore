@@ -1,2 +1,7 @@
 application.properties
 target/
+
+# temporary Maven wrapper build scratch
+maven/
+*.working
+*.log
