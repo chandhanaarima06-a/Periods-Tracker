@@ -1,93 +1,139 @@
+/* ===== Design tokens ===== */
+:root {
+  --bg: #fdf6f0;
+  --card: #ffffff;
+  --ink: #4a3f42;
+  --rose: #e88aa0;
+  --rose-deep: #c0606a;
+  --rose-soft: #fdecea;
+  --peach: #ffe8d6;
+  --peach-deep: #ffd9b0;
+  --dot: #b85c68;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --radius: 16px;
+}
+
+/* ===== Reset ===== */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
+/* ===== Base ===== */
 body {
-  background-color: #fdf6f0;
-  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 16px;
 }
 
+/* ===== Top bar ===== */
 nav {
-  background-color: #e8a0a0;
-  padding: 16px 24px;
+  background: var(--rose);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 nav h2 {
   color: white;
-  font-size: 24px;
+  font-size: 22px;
+  margin: 0;
 }
 
+nav div {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* SignOutButton in top bar / bottom nav */
+nav button,
+.bottom-nav button {
+  background: var(--card);
+  color: var(--rose-deep);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ===== Card container ===== */
 main {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 32px;
-  background-color: white;
-  border-radius: 12px;
+  max-width: 700px;
+  margin: 24px auto 100px;
+  padding: 28px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
+/* ===== Form ===== */
 label {
   display: block;
   margin-bottom: 6px;
-  font-weight: bold;
-  color: #555;
+  font-weight: 600;
+  color: var(--ink);
   margin-top: 20px;
 }
 
 input[type="date"] {
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #e6d5d5;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   width: 100%;
+  font-family: inherit;
 }
 
 button {
-  background-color: #e8a0a0;
+  background: var(--rose);
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
   margin-top: 16px;
+  font-family: inherit;
 }
 
+/* ===== Sections / cards ===== */
 section {
-  margin-top: 30px;
+  margin-top: 28px;
   padding: 20px;
-  background-color: #fdecea;
+  background: var(--rose-soft);
   border-radius: 12px;
-  border-left: 4px solid #e8a0a0;
+  border-left: 4px solid var(--rose);
 }
 
 section h3 {
+  color: var(--rose-deep);
   margin-bottom: 8px;
-  color: #c0606a;
 }
 
 section p {
   color: #777;
   font-size: 15px;
 }
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-nav div {
-  display: flex;
-  gap: 20px;
-}
-
-nav a {
+.topbar-link {
   color: white;
   text-decoration: none;
-  font-size: 16px;
-}
-
-nav a:hover {
-  text-decoration: underline;
+  font-size: 14px;
 }
