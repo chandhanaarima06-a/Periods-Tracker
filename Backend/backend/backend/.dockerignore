@@ -1,0 +1,15 @@
+# Build context exclusions — keeps the image small AND secret-free.
+
+# Local build artifacts (never ship them)
+target/
+maven/
+
+# CRITICAL: the gitignored local config holds the local MySQL password.
+# If it entered the build context it would be baked into the jar.
+# Config must come from environment variables at runtime instead.
+application.properties
+
+# Wrapper scratch + logs + git history
+*.working
+*.log
+.git
