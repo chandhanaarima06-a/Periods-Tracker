@@ -1,0 +1,12 @@
+# Build context exclusions for the frontend image.
+
+# Never ship dev dependencies or local build output
+node_modules/
+build/
+
+# Secret files stay local — config is passed via build args / Railway env vars
+.env
+.env.*
+
+# Git history doesn't belong in the image
+.git
