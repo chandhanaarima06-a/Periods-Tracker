@@ -4,10 +4,8 @@
 target/
 maven/
 
-# CRITICAL: the gitignored local config holds the local MySQL password.
-# If it entered the build context it would be baked into the jar.
-# Config must come from environment variables at runtime instead.
-application.properties
+# application.properties IS included — it only holds env-var placeholders,
+# no secrets. Real credentials come from environment variables at runtime.
 
 # Wrapper scratch + logs + git history
 *.working
