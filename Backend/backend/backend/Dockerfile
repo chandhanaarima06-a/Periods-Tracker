@@ -15,9 +15,11 @@ RUN mvn -B -DskipTests package
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-# Grab just the jar from stage 1. *.jar is safe here — Spring Boot leaves the
-# repackaged jar plus a *.jar.original, which this glob does NOT match.
-COPY --from=build /target/*.jar app.jar
+# Grab just the jar from stage 1. COPY --from resolves against the stage's
+# filesystem root (not its WORKDIR), and the build stage's WORKDIR is /app,
+# so the jar lives at /app/target/*.jar. *.jar is safe here — Spring Boot
+# leaves the repackaged jar plus a *.jar.original, which this glob does NOT match.
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT:-8080}"]
